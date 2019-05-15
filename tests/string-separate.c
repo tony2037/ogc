@@ -6,7 +6,11 @@
 #define IS_DEL(c, d) (c == d)
 
 char *my_strdup(char *s){
-
+    size_t size = strlen(s);
+    char *dup = gc_alloc(sizeof(char) * (size + 1));
+    dup[size] = '\0';
+    strcpy(dup, s);
+    return dup;
 }
 
 static int count_words(char *s, char delimiter)
@@ -59,9 +63,13 @@ char **my_strsep(char *s, char delimiter)
 int main(int argc, char *argv[])
 {
     gc_init(&argc, 1);
+    char *s = my_strdup("Hello World");
+    assert(s);
+    gc_dump_internals();
 
     char **sep = my_strsep("hello,world", ',');
     assert(sep);
+    gc_dump_internals();
 
     printf("%s\n", sep[0]);
     printf("%s\n", sep[1]);
