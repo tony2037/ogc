@@ -5,6 +5,10 @@
 
 #define IS_DEL(c, d) (c == d)
 
+char *my_strdup(char *s){
+
+}
+
 static int count_words(char *s, char delimiter)
 {
     int i = -1, words = 0;
