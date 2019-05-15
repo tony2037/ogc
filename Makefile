@@ -13,7 +13,8 @@ deps := $(OBJS:%.o=%.d)
 
 TESTS := \
 	tests/dummy \
-	tests/string-separate
+	tests/string-separate \
+	tests/dummy2
 
 tests/%: tests/%.o
 	$(CC) $(CFLAGS) -o $@ $^ $(OBJS)
@@ -36,6 +37,6 @@ tests/%.done: tests/%
 check: $(OBJS) $(addsuffix .done, $(TESTS))
 
 clean:
-	$(RM) $(deps) $(OBJS) $(TESTS)
+	$(RM) $(deps) $(OBJS) $(TESTS) $(TESTS:%=%.o)
 
 -include $(deps)
