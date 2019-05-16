@@ -1,6 +1,8 @@
 #include "gc_internal.h"
+#include <pthread.h>
 
 gc_t __gc_object = (gc_t){.ref_count = 0};
+pthread_mutex_t mutex;
 
 void gc_init(void *ptr, size_t limit)
 {
@@ -16,6 +18,7 @@ void gc_init(void *ptr, size_t limit)
                          .min = UINTPTR_MAX,
                          .max = 0,
                          .globals = NULL};
+    pthread_mutex_init (&mutex,NULL);
 }
 
 static inline void swap_ptr(uint8_t **a, uint8_t **b)
