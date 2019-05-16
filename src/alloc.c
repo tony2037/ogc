@@ -2,6 +2,7 @@
 
 void *gc_alloc(size_t size)
 {
+    lock();
     uintptr_t ptr;
     if (!(ptr = (uintptr_t) malloc(size)))
         return NULL;
@@ -20,6 +21,7 @@ void *gc_alloc(size_t size)
     if (__gc_object.ptr_num >= __gc_object.limit)
         gc_run();
     return (void *) ptr;
+    unlock();
 }
 
 void gc_free(void *ptr)
