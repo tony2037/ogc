@@ -26,25 +26,26 @@ int main(int argc, char *argv[])
 
     int ret = 0;
 
+    lock();
     if((ret = pthread_create(&t1, NULL, *hello, NULL))) {
         fprintf(stderr,"Error - pthread_create() return code: %d\n",ret);
         exit(EXIT_FAILURE);
     }
-
+    unlock();
+    
+    lock();
     if((ret = pthread_create(&t2, NULL, *sample, NULL))) {
         fprintf(stderr,"Error - pthread_create() return code: %d\n",ret);
         exit(EXIT_FAILURE);
     }
+    unlock();
 
-    if ((ret = pthread_join(t2, NULL))) {
-        fprintf(stderr,"Error - pthread_join() return code: %d\n",ret);
-        exit(EXIT_FAILURE);
-    }
-
+    lock();
     if((ret = pthread_create(&t3, NULL, *hello, NULL))) {
         fprintf(stderr,"Error - pthread_create() return code: %d\n",ret);
         exit(EXIT_FAILURE);
     }
+    unlock();
 
     if ((ret = pthread_join(t1, NULL))) {
         fprintf(stderr,"Error - pthread_join() return code: %d\n",ret);

@@ -11,4 +11,7 @@ void gc_destroy(void);
 
 void gc_dump_internals(void);
 
+void lock(void);
+void unlock(void);
+
 #endif

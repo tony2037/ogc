@@ -4,6 +4,16 @@
 gc_t __gc_object = (gc_t){.ref_count = 0};
 pthread_mutex_t mutex;
 
+void lock(void)
+{
+    pthread_mutex_lock (&mutex);
+}
+
+void unlock(void)
+{
+    pthread_mutex_unlock(&mutex);
+}
+
 void gc_init(void *ptr, size_t limit)
 {
     if (__gc_object.ref_count) {
@@ -64,8 +74,10 @@ void gc_sweep(void)
 
 void gc_run(void)
 {
+    pthread_mutex_lock (&mutex);
     gc_mark_stack();
     gc_sweep();
+    pthread_mutex_unlock(&mutex);
 }
 
 void gc_destroy(void)
