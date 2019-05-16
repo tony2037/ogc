@@ -74,10 +74,8 @@ void gc_sweep(void)
 
 void gc_run(void)
 {
-    pthread_mutex_lock (&mutex);
     gc_mark_stack();
     gc_sweep();
-    pthread_mutex_unlock(&mutex);
 }
 
 void gc_destroy(void)
