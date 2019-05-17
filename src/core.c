@@ -27,7 +27,8 @@ void gc_init(void *ptr, size_t limit)
                          .limit = limit,
                          .min = UINTPTR_MAX,
                          .max = 0,
-                         .globals = NULL};
+                         .globals = NULL,
+                         .multi_stack_start = {NULL}};
     pthread_mutex_init (&mutex,NULL);
 }
 
@@ -74,7 +75,7 @@ void gc_sweep(void)
 
 void gc_run(void)
 {
-    gc_mark_stack();
+    gc_mark_stack(__gc_object.stack_start);
     gc_sweep();
 }
 

@@ -30,6 +30,8 @@ struct __gc {
     size_t ref_count;
     uintptr_t min, max;
     gc_list_t *globals;
+
+    void *multi_stack_start[100];
 };
 typedef struct __gc gc_t;
 
@@ -38,7 +40,7 @@ extern gc_t __gc_object;
 
 void gc_mark(uint8_t *s, uint8_t *e);
 void gc_sweep();
-void gc_mark_stack(void);
+void gc_mark_stack(void *);
 
 gc_list_t *gc_ptr_index(uintptr_t ptr);
 void gc_list_add(gc_list_t **begin_list, gc_ptr_t data);
