@@ -32,6 +32,7 @@ struct __gc {
     gc_list_t *globals;
 
     void *multi_stack_start[100];
+    bool multithreading;
 };
 typedef struct __gc gc_t;
 

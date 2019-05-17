@@ -28,7 +28,8 @@ void gc_init(void *ptr, size_t limit)
                          .min = UINTPTR_MAX,
                          .max = 0,
                          .globals = NULL,
-                         .multi_stack_start = {NULL}};
+                         .multi_stack_start = {NULL},
+                         .multithreading = false};
     pthread_mutex_init (&mutex,NULL);
 }
 
@@ -75,7 +76,7 @@ void gc_sweep(void)
 
 void gc_run(void)
 {
-    gc_mark_stack(__gc_object.stack_start);
+    (__gc_object.multithreading) ? gc_mark_stack(__gc_object.multi_stack_start[pthread_self() % 100]) : gc_mark_stack(__gc_object.stack_start);
     gc_sweep();
 }
 
@@ -95,4 +96,15 @@ void gc_destroy(void)
             __gc_object.ptr_map[i] = 0;
         }
     }
+}
+
+
+void set_multithreading(bool multi)
+{
+    __gc_object.multithreading = multi;
+}
+
+void set_multi_stack_start(size_t index, void *addr)
+{
+    __gc_object.multi_stack_start[index % 100] = addr;
 }

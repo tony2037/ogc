@@ -14,4 +14,7 @@ void gc_dump_internals(void);
 void lock(void);
 void unlock(void);
 
+void set_multithreading(bool);
+void set_multi_stack_start(size_t, void *);
+
 #endif

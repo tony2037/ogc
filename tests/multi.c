@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <assert.h>
 #include <pthread.h>
 #include "gc.h"
 
 void *sample(void *h)
 {
+    set_multi_stack_start(pthread_self() % 100, &h);
     void **ptr = gc_alloc(10);
     *ptr = gc_alloc(11);
     *ptr += 3;
@@ -23,11 +25,12 @@ int main(int argc, char *argv[])
 {
     pthread_t t1, t2, t3;
     gc_init(&argc, 1);
+    set_multithreading(true);
 
     int ret = 0;
 
     lock();
-    if((ret = pthread_create(&t1, NULL, *hello, NULL))) {
+    if((ret = pthread_create(&t1, NULL, *sample, NULL))) {
         fprintf(stderr,"Error - pthread_create() return code: %d\n",ret);
         exit(EXIT_FAILURE);
     }
